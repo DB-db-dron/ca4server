@@ -1,0 +1,13 @@
+{
+  "name": "mcq-sync-server",
+  "version": "1.0.0",
+  "description": "Express REST API server for MCQ Exam Sync & Polls",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
+  }
+}
