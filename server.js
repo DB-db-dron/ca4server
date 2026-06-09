@@ -274,7 +274,7 @@ app.get('/api/stats', ensureUserId, async (req, res) => {
 });
 
 // REST Endpoint: Reset / Wipe DB
-app.delete('/api/questions', async (req, res) => {
+app.get('/api/questions', async (req, res) => {
   try {
     // Reset main DB
     const freshDb = { questions: {} };
