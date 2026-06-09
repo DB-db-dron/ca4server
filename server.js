@@ -212,16 +212,11 @@ app.post('/api/questions/sync', ensureUserId, async (req, res) => {
     
     await writeDatabase(db);
     
-    // Find which option currently contains the user's ID
-    const userSelectedOpt = db.questions[qKey].options.find(opt => opt.userIds.includes(userId));
-    const userSelection = userSelectedOpt ? userSelectedOpt.text : null;
-    
     res.json({
       success: true,
       data: {
         questionText: db.questions[qKey].questionText,
-        options: db.questions[qKey].options,
-        selectedOption: userSelection
+        options: db.questions[qKey].options
       }
     });
     
@@ -234,36 +229,11 @@ app.post('/api/questions/sync', ensureUserId, async (req, res) => {
 // REST Endpoint: Get Dashboard Stats and Question list
 app.get('/api/stats', ensureUserId, async (req, res) => {
   try {
-    const userId = req.userId;
     const db = await readDatabase();
-    
-    const questionsList = Object.values(db.questions);
-    const totalParsed = questionsList.length;
-    
-    // Count how many questions this user has voted on
-    let totalAnswered = 0;
-    questionsList.forEach(q => {
-      const userHasVoted = q.options.some(opt => opt.userIds.includes(userId));
-      if (userHasVoted) {
-        totalAnswered++;
-      }
-    });
-    
-    // Add active selections on questions array returned to popup
-    const questionsResponse = questionsList.map(q => {
-      const userSelectedOpt = q.options.find(opt => opt.userIds.includes(userId));
-      return {
-        ...q,
-        selectedOption: userSelectedOpt ? userSelectedOpt.text : null
-      };
-    });
+    const questionsResponse = Object.values(db.questions);
     
     res.json({
       success: true,
-      stats: {
-        totalParsed,
-        totalAnswered
-      },
       questions: questionsResponse
     });
     
