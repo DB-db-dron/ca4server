@@ -284,6 +284,11 @@ app.get('/api/reset/:password', async (req, res) => {
   }
 });
 
+// health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ success: true, message: 'Server is healthy' });
+});
+
 // Fallback error handler
 app.use((req, res) => {
   res.status(404).json({ success: false, error: 'Route not found' });
