@@ -243,6 +243,20 @@ app.get('/api/stats', ensureUserId, async (req, res) => {
   }
 });
 
+// REST Endpoint: Get All Users
+app.get('/api/users', async (req, res) => {
+  try {
+    const userDb = await readUserDatabase();
+    res.json({
+      success: true,
+      users: userDb.users
+    });
+  } catch (error) {
+    console.error('Error in /api/users:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
 // REST Endpoint: Reset / Wipe DB
 app.get('/api/questions', async (req, res) => {
   try {
